@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class appPermission extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+public class AppPermissionActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
     private static final int PERMISSION_REQUEST_CODE = 1;
     Button allowButton;
     String[] permissions = Util.getPermissions();
@@ -47,7 +47,7 @@ public class appPermission extends AppCompatActivity implements EasyPermissions.
     }
 
     public void allowAccess(View view) {
-        Intent intent = new Intent(appPermission.this, share.class);
+        Intent intent = new Intent(AppPermissionActivity.this, ShareActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
@@ -64,7 +64,7 @@ public class appPermission extends AppCompatActivity implements EasyPermissions.
     }
 
     public void goToAbout(View view) {
-        Intent intent = new Intent(appPermission.this, about.class);
+        Intent intent = new Intent(AppPermissionActivity.this, AboutActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

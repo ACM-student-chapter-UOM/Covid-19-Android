@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class otp_entering extends AppCompatActivity {
+public class OTPEnteringActivity extends AppCompatActivity {
     private EditText code_1;
     private EditText code_2;
     private EditText code_3;
@@ -80,7 +80,7 @@ public class otp_entering extends AppCompatActivity {
                 Button btn=findViewById(R.id.resend_btn);
                 btn.setEnabled(true);
                 btn.setVisibility(View.VISIBLE);
-                Toast.makeText(otp_entering.this, "The code we just sent to you has expired. Please retry.", Toast.LENGTH_LONG).show();
+                Toast.makeText(OTPEnteringActivity.this, "The code we just sent to you has expired. Please retry.", Toast.LENGTH_LONG).show();
             }
         }.start();
         if (cdt == null) {
@@ -167,7 +167,7 @@ public class otp_entering extends AppCompatActivity {
                     Button btn=findViewById(R.id.resend_btn);
                     btn.setEnabled(true);
                     btn.setVisibility(View.VISIBLE);
-                    Toast.makeText(otp_entering.this, "The code we just sent to you has expired. Please retry.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(OTPEnteringActivity.this, "The code we just sent to you has expired. Please retry.", Toast.LENGTH_LONG).show();
                 }
 
             }.start();
@@ -176,7 +176,7 @@ public class otp_entering extends AppCompatActivity {
             }
         }
         catch(Exception e) {
-            Toast.makeText(otp_entering.this, "Failed to resend the code. Try again in 60 seconds.", Toast.LENGTH_LONG).show();
+            Toast.makeText(OTPEnteringActivity.this, "Failed to resend the code. Try again in 60 seconds.", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -187,14 +187,14 @@ public class otp_entering extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(otp_entering.this, appPermission.class);
+                            Intent intent = new Intent(OTPEnteringActivity.this, AppPermissionActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
-                            String userId = Util.generateHash(phoneNumber,otp_entering.this);
-                            Context context = otp_entering.this;
-                            DatabaseHelper.getInstance(otp_entering.this).insertUserId(userId);
+                            String userId = Util.generateHash(phoneNumber, OTPEnteringActivity.this);
+                            Context context = OTPEnteringActivity.this;
+                            DatabaseHelper.getInstance(OTPEnteringActivity.this).insertUserId(userId);
                         } else {
-                            Toast.makeText(otp_entering.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(OTPEnteringActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -244,7 +244,7 @@ public class otp_entering extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(otp_entering.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(OTPEnteringActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
 
             if (e instanceof FirebaseAuthInvalidCredentialsException) {
 

@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.example.acmcovidapplication.services.CustomService;
 
-public class share extends AppCompatActivity {
+public class ShareActivity extends AppCompatActivity {
     String[] permissions = Util.getPermissions();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class share extends AppCompatActivity {
         super.onResume();
         if (!EasyPermissions.hasPermissions(this, permissions)) {
             if (!EasyPermissions.hasPermissions(this, permissions)) {
-                Intent intent = new Intent(this, appPermission.class);
+                Intent intent = new Intent(this, AppPermissionActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
@@ -53,7 +53,7 @@ public class share extends AppCompatActivity {
     }
 
     public void goToAbout(View view) {
-        Intent intent = new Intent(share.this, about.class);
+        Intent intent = new Intent(ShareActivity.this, AboutActivity.class);
         startActivity(intent);
     }
 }

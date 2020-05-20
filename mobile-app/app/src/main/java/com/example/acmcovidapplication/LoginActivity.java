@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-public class login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText phoneNumber;
     private final String countryCode = "+94";
@@ -32,7 +32,7 @@ public class login extends AppCompatActivity {
         }
 
         String phoneNumber = countryCode + number;
-        Intent intent = new Intent(login.this, otp_entering.class);
+        Intent intent = new Intent(LoginActivity.this, OTPEnteringActivity.class);
         intent.putExtra("phoneNumber", phoneNumber);
         startActivity(intent);
     }

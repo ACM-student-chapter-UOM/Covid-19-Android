@@ -3,11 +3,13 @@ package com.example.acmcovidapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
 
 import com.example.acmcovidapplication.db.DatabaseHelper;
+import com.example.acmcovidapplication.db.DeviceModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
                     boolean accepted = DatabaseHelper.getInstance(MainActivity.this).getAllowed();
 
                     if(accepted){
-                        Intent intent = new Intent(MainActivity.this, share.class);
+                        Intent intent = new Intent(MainActivity.this, ShareActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                     else{
-                        Intent intent = new Intent(MainActivity.this, appPermission.class);
+                        Intent intent = new Intent(MainActivity.this, AppPermissionActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     Intent i = new Intent(MainActivity.this,
-                            Home.class);
+                            HomeActivity.class);
                     //Intent is used to switch from one activity to another.
 
                     startActivity(i);
@@ -65,11 +67,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }, SPLASH_SCREEN_TIME_OUT);
 
+        for (DeviceModel deviceModel: DatabaseHelper.getInstance(this).getDevices()){
+            Log.d("all devices", "onCreate: " + deviceModel.toString());
+        }
     }
 
 
     public void goToLogin(View view) {
-        Intent intent = new Intent(MainActivity.this, login.class);
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
 
     }

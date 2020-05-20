@@ -106,7 +106,7 @@ public class CustomService extends Service implements BeaconConsumer, LifecycleO
             setBluetooth(true);
         } else {
             if (database_helper.getAllowed()
-                     && deviceId != null){
+                    && deviceId != null){
                 setupBeacon(deviceId);
             }
             else {
@@ -286,4 +286,3 @@ public class CustomService extends Service implements BeaconConsumer, LifecycleO
 
 
 }
-

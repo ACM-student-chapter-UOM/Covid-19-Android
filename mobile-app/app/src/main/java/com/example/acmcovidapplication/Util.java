@@ -83,7 +83,7 @@ public class Util {
         info = new JobInfo.Builder(123, componentName)
                 .setPersisted(true)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setPeriodic(context.getResources().getInteger(R.integer.scan_period))
+                .setPeriodic(context.getResources().getInteger(R.integer.upload_period))
                 .build();
 
         JobScheduler scheduler = null;

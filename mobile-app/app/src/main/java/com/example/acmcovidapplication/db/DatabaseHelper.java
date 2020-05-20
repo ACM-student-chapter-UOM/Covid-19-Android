@@ -54,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query_user_log,query_app_data;
         //creating table
-        query_user_log = "CREATE TABLE " + USER_LOG_TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, USERID TEXT, TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP)";
+        query_user_log = "CREATE TABLE " + USER_LOG_TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, USERID TEXT, TIMESTAMP_UP DATETIME DEFAULT CURRENT_TIMESTAMP)";
         query_app_data = "CREATE TABLE " + APP_DATA_TABLE_NAME + "(ID INTEGER PRIMARY KEY , USER_ID TEXT TYPE UNIQUE, IS_ALLOWED INTEGER  )";
 
 
@@ -66,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TRIGGER IF EXISTS validate");
         db.execSQL(" CREATE TRIGGER  validate BEFORE INSERT ON " + USER_LOG_TABLE_NAME +
                 " FOR EACH ROW BEGIN SELECT CASE WHEN (SELECT COUNT(userid) " +
-                "FROM " + USER_LOG_TABLE_NAME + " WHERE userid = NEW.userid AND (strftime('%s', CURRENT_TIMESTAMP) -  Strftime('%s', timestamp ))/60 < "+update_time+") > 0" +
+                "FROM " + USER_LOG_TABLE_NAME + " WHERE userid = NEW.userid AND  ((julianday(CURRENT_TIMESTAMP) - julianday(timestamp_up)) * 86400.0)/60 < "+60+") > 0" +
                 " THEN RAISE(ABORT, 'cannot update') END; END");
 
     }
