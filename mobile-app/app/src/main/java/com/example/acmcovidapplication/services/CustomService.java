@@ -49,6 +49,7 @@ import static com.example.acmcovidapplication.Util.setBluetooth;
 public class CustomService extends Service implements BeaconConsumer, LifecycleOwner,
         NetworkStateReceiver.NetworkStateReceiverListener  {
     private BeaconManager beaconManager;
+    Beacon beacon;
     private static final int FOREGROUND_ID = 1;
     private BackgroundPowerSaver backgroundPowerSaver;
     private  double MAX_DISTANCE;
@@ -92,11 +93,15 @@ public class CustomService extends Service implements BeaconConsumer, LifecycleO
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(this.getResources().getString(R.string.app_name)  + " is  Active")
-                .setContentText("Keeping this app running will  save you from becoming a COVID-19 victim")
+                .setContentText("Keeping this app running will  save you from  \nbecoming a COVID-19 victim")
                 .setSmallIcon(R.mipmap.app_icon)
                 .build();
 
         startForeground(FOREGROUND_ID, notification);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Util.scheduleJobHelper(this);
+        }
 
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -164,27 +169,32 @@ public class CustomService extends Service implements BeaconConsumer, LifecycleO
 
     //this will transmit the beacon
     private void setupBeacon(String deviceId) {
-        Beacon beacon = new Beacon.Builder()
-                .setId1(deviceId) // need to generate ids device specific
-                .setId2("1")
-                .setId3("2")
-                .setManufacturer(0x0118)
-                .setTxPower(-59)
-                .setDataFields(Collections.singletonList(0L))
-                .build();
         BeaconParser beaconParser = new BeaconParser()
                 .setBeaconLayout(BEACON_LAYOUT);
-        BeaconTransmitter beaconTransmitter = new BeaconTransmitter(this, beaconParser);
-        beaconTransmitter.startAdvertising(beacon);
+        if(beacon == null) {
+            beacon = new Beacon.Builder()
+                    .setId1(deviceId) // need to generate ids device specific
+                    .setId2("1")
+                    .setId3("2")
+                    .setManufacturer(0x0118)
+                    .setTxPower(-59)
+                    .setDataFields(Collections.singletonList(0L))
+                    .build();
 
-        beaconManager = BeaconManager.getInstanceForApplication(this);
+            BeaconTransmitter beaconTransmitter = new BeaconTransmitter(this, beaconParser);
+            beaconTransmitter.startAdvertising(beacon);
+        }
+        if(beaconManager == null){
+            beaconManager = BeaconManager.getInstanceForApplication(this);
 
-        // To detect proprietary beacons, you must add a line like below corresponding to your beacon
-        // type.  Do a web search for "setBeaconLayout" to get the proper expression.
-        beaconManager.getBeaconParsers().add(beaconParser);
+            // To detect proprietary beacons, you must add a line like below corresponding to your beacon
+            // type.  Do a web search for "setBeaconLayout" to get the proper expression.
+            beaconManager.getBeaconParsers().add(beaconParser);
        /* beaconManager.setBackgroundBetweenScanPeriod(0);
         beaconManager.setBackgroundScanPeriod(10000);*/
-        beaconManager.bind(this);
+            beaconManager.bind(this);
+        }
+
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
